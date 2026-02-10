@@ -15,7 +15,6 @@ RTC_DATA_ATTR int bpm = 120;
 RTC_DATA_ATTR int sequenceLength = 32; 
 RTC_DATA_ATTR int stepsPerBeat = 4;   
 RTC_DATA_ATTR int noteResolution = 4; 
-// [★추가됨] 트랙 타입 보존 (기본값 0 = SYNTH)
 RTC_DATA_ATTR int trackType[8] = {0}; 
 
 // [일반 변수 초기화]
@@ -78,3 +77,8 @@ int genNote = 60;
 bool isDrumSettingsOpen = false;
 int drumSettingsCursor = 0;
 int drumProjectSlot = 0;
+
+// [★NEW] 트랙 샘플 버퍼 초기화
+int16_t* trackSampleBuffers[8] = {NULL};
+uint32_t trackSampleLengths[8] = {0};
+bool isTrackSampleLoaded[8] = {false};

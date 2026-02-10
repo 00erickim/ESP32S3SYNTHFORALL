@@ -6,7 +6,7 @@
 #include <ESP32Encoder.h>
 #include <SdFat.h>
 
-// ... (핀 정의는 기존과 동일) ...
+// 핀 정의 (기존 유지)
 #define ENC1_A    2   
 #define ENC1_B    1
 #define ENC1_SW   40  
@@ -42,10 +42,10 @@ enum AppMode {
     MODE_TRACKER, 
     MODE_PIANO_ROLL,
     MODE_PROJECT_MGR,
-    MODE_INSTRUMENT_SELECT // [★NEW] 악기 선택 메뉴 모드 추가
+    MODE_INSTRUMENT_SELECT,
+    MODE_SAMPLE_LOADER // [★NEW] 샘플러 파일 로더 모드 추가
 };
 
-// ... (이하 내용은 기존 Globals.h와 동일하므로 그대로 유지) ...
 // [EXTERN 선언]
 extern TFT_eSPI tft;
 extern TFT_eSprite img; 
@@ -97,9 +97,17 @@ extern int drumProjectSlot;
 
 extern int trackType[8]; // 0: SYNTH, 1: SAMPLER
 
+// [★수정] DrumSound 구조체 확장
 struct DrumSound {
     int attack; int decay; int sustain; int release;
-    int pitch; int waveform; int volume; int pitchMod;  
+    int pitch;      // 재생 속도 (Pitch)
+    int waveform;   // 신스: 파형선택 / 샘플러: 로드 플래그(또는 미사용)
+    int volume; 
+    int pitchMod;  
+    
+    // [★NEW] 샘플러 전용 (0~1000)
+    int sampleStart; 
+    int sampleEnd;   
 };
 
 struct SynthSound {
@@ -138,5 +146,10 @@ extern int genNote;
 
 extern int currentMode;
 extern bool isAmbientPlaying;
+
+// [★NEW] 트랙별 샘플 버퍼 관리
+extern int16_t* trackSampleBuffers[8];
+extern uint32_t trackSampleLengths[8];
+extern bool isTrackSampleLoaded[8];
 
 #endif
