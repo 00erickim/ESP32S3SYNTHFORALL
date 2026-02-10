@@ -6,7 +6,7 @@
 #include <ESP32Encoder.h>
 #include <SdFat.h>
 
-// [핀 정의]
+// ... (핀 정의는 기존과 동일) ...
 #define ENC1_A    2   
 #define ENC1_B    1
 #define ENC1_SW   40  
@@ -30,8 +30,22 @@
 #define SD_CS_PIN 46
 
 // [모드 ENUM 정의]
-enum AppMode { MODE_MENU, MODE_SPACE_VIEW, MODE_DRUM, MODE_KEYBOARD, MODE_FINGER_DRUM, MODE_DRONE, MODE_GRANULAR_LOADER, MODE_GRANULAR_PLAY, MODE_TRACKER, MODE_PIANO_ROLL };
+enum AppMode { 
+    MODE_MENU, 
+    MODE_SPACE_VIEW, 
+    MODE_DRUM, 
+    MODE_KEYBOARD, 
+    MODE_FINGER_DRUM, 
+    MODE_DRONE, 
+    MODE_GRANULAR_LOADER, 
+    MODE_GRANULAR_PLAY, 
+    MODE_TRACKER, 
+    MODE_PIANO_ROLL,
+    MODE_PROJECT_MGR,
+    MODE_INSTRUMENT_SELECT // [★NEW] 악기 선택 메뉴 모드 추가
+};
 
+// ... (이하 내용은 기존 Globals.h와 동일하므로 그대로 유지) ...
 // [EXTERN 선언]
 extern TFT_eSPI tft;
 extern TFT_eSprite img; 
@@ -65,7 +79,6 @@ extern int pianoRollCursorNote;
 extern int pianoRollScrollStep;
 extern int pianoRollScrollNote;
 
-// [★수정됨] 최대 64스텝까지 저장 가능하도록 크기 변경
 extern bool drumPattern[8][64]; 
 extern bool synthPattern[8][16]; 
 
@@ -75,10 +88,14 @@ extern int bpm;
 extern int drumCursorTrack;     
 extern int drumCursorStep;
 
-// [★추가됨] 시퀀스 길이 설정 변수 및 메뉴 플래그
-extern int sequenceLength; 
-extern bool isDrumSettingsOpen;
-extern int stepsPerBeat;
+extern int sequenceLength;     
+extern int stepsPerBeat;       
+extern int noteResolution;     
+extern bool isDrumSettingsOpen; 
+extern int drumSettingsCursor; 
+extern int drumProjectSlot;
+
+extern int trackType[8]; // 0: SYNTH, 1: SAMPLER
 
 struct DrumSound {
     int attack; int decay; int sustain; int release;
@@ -121,8 +138,5 @@ extern int genNote;
 
 extern int currentMode;
 extern bool isAmbientPlaying;
-
-extern int noteResolution;
-extern int drumSettingsCursor;
 
 #endif

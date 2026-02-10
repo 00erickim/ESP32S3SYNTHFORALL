@@ -6,15 +6,17 @@ ESP32Encoder enc1, enc2;
 SdFat sd;
 
 // [딥슬립 데이터 보존 변수]
-// [★수정됨] 64스텝으로 확장
 RTC_DATA_ATTR bool drumPattern[8][64] = {0}; 
 RTC_DATA_ATTR bool synthPattern[8][16] = {0};
 RTC_DATA_ATTR int trackVolume[4] = {200, 200, 200, 200}; 
 RTC_DATA_ATTR int bpm = 120;
-// [★추가됨] 시퀀스 길이 (기본값 16)
-RTC_DATA_ATTR int sequenceLength = 16; 
-RTC_DATA_ATTR int stepsPerBeat = 4;
-RTC_DATA_ATTR int noteResolution = 4;
+
+// [드럼 시퀀서 설정값 보존]
+RTC_DATA_ATTR int sequenceLength = 32; 
+RTC_DATA_ATTR int stepsPerBeat = 4;   
+RTC_DATA_ATTR int noteResolution = 4; 
+// [★추가됨] 트랙 타입 보존 (기본값 0 = SYNTH)
+RTC_DATA_ATTR int trackType[8] = {0}; 
 
 // [일반 변수 초기화]
 int16_t* sampleBuffer = NULL;
@@ -73,7 +75,6 @@ int genLength = 16;
 int genHits = 4;
 int genNote = 60;
 
-// [★추가됨] 메뉴 상태 플래그
 bool isDrumSettingsOpen = false;
-
 int drumSettingsCursor = 0;
+int drumProjectSlot = 0;
